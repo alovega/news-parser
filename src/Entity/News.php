@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Index;
 /**
  * @ORM\Entity(repositoryClass=NewsRepository::class)
  * @ORM\Table(name="news",indexes={@Index(name="search_idx", fields={"title", "created_at", "updated_at"})})
+ *  @ORM\HasLifecycleCallbacks
  */
 class News
 {
@@ -32,15 +33,15 @@ class News
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $picture;
+    private $imageName;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",  nullable=true)
      */
     protected $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",  nullable=true)
      */
     protected $updated_at;
 
@@ -73,14 +74,14 @@ class News
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getImageName(): ?string
     {
-        return $this->picture;
+        return $this->imageName;
     }
 
-    public function setPicture(string $picture): self
+    public function setImageName(string $imageName): self
     {
-        $this->picture = $picture;
+        $this->imageName = $imageName;
 
         return $this;
     }
