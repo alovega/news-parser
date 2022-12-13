@@ -42,6 +42,7 @@ class NewsController extends AbstractController
         $title = $request->request->get('title');
         /** @var description $description */
         $description = $request->request->get('description');
+        $date_added = $request->request->get('date_added');
         /** @var uploadedFile $image */
         $image = $request->files->get('image');
         $destination = $this-> getParameter('kernel.project_dir').'/public/uploads/image';

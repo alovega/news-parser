@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass=NewsRepository::class)
- * @ORM\Table(name="news",indexes={@Index(name="search_idx", fields={"title", "created_at", "updated_at"})})
+ * @ORM\Table(name="news",indexes={@Index(name="search_idx", fields={"title", "created_at", "updated_at", "date_added"})})
  *  @ORM\HasLifecycleCallbacks
  */
 class News
@@ -44,6 +44,11 @@ class News
      * @ORM\Column(type="datetime",  nullable=true)
      */
     protected $updated_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date_added;
 
     public function getId(): ?int
     {
@@ -104,5 +109,17 @@ class News
     public function onPreUpdate()
     {
         $this->updated_at = new \DateTime("now");
+    }
+
+    public function getDateAdded(): ?\DateTimeInterface
+    {
+        return $this->date_added;
+    }
+
+    public function setDateAdded(\DateTimeInterface $date_added): self
+    {
+        $this->date_added = $date_added;
+
+        return $this;
     }
 }
