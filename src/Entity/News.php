@@ -33,7 +33,7 @@ class News
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $imageName;
+    private $image_url;
 
     /**
      * @ORM\Column(type="datetime",  nullable=true)
@@ -44,11 +44,6 @@ class News
      * @ORM\Column(type="datetime",  nullable=true)
      */
     protected $updated_at;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date_added;
 
     public function getId(): ?int
     {
@@ -79,14 +74,14 @@ class News
         return $this;
     }
 
-    public function getImageName(): ?string
+    public function getImageUrl(): ?string
     {
-        return $this->imageName;
+        return $this->image_url;
     }
 
-    public function setImageName(string $imageName): self
+    public function setImageUrl(string $image_url): self
     {
-        $this->imageName = $imageName;
+        $this->image_url = $image_url;
 
         return $this;
     }
@@ -109,17 +104,5 @@ class News
     public function onPreUpdate()
     {
         $this->updated_at = new \DateTime("now");
-    }
-
-    public function getDateAdded(): ?\DateTimeInterface
-    {
-        return $this->date_added;
-    }
-
-    public function setDateAdded(\DateTimeInterface $date_added): self
-    {
-        $this->date_added = $date_added;
-
-        return $this;
     }
 }

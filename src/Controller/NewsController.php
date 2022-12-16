@@ -8,7 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Message\NewsSchedule;
+use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class NewsController extends AbstractController
 {
@@ -30,39 +33,36 @@ class NewsController extends AbstractController
 
     /**
      * @Route("/news", "name: 'create_news'")
+     * simulate a call to an external api for news data
      */
-    public function createNews(ManagerRegistry $doctrine, Request $request): JsonResponse
+    public function getNews(Request $request): Response
     {
-        $entityManager = $doctrine -> getManager();
-        $news = $doctrine->getRepository(News::class)->findOneBy(['title'=>$request->request->get('title')]);
-        if($news == null){
-            $news = new News();
-        }
-        /** @var title $title */
-        $title = $request->request->get('title');
-        /** @var description $description */
-        $description = $request->request->get('description');
-        $date_added = $request->request->get('date_added');
-        /** @var uploadedFile $image */
-        $image = $request->files->get('image');
-        $destination = $this-> getParameter('kernel.project_dir').'/public/uploads/image';
-        // get file name extension
-        $originalFile = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME);
-        $name = $title.'-'.$news->getId().'.'.$image->guessExtension();
-        //move file to location
-        $image -> move($destination, $name);
+    
+        // $title = 'Stranger'.uniqid();
+        // $description = 'Random Stranger'.uniqueId();
+        // $image = 'https://images.unsplash.com/photo-1670881298357-1792768792d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
 
-        //set and save data to the database
+        $data = [
+            'title'=> 'Stranger'.'-'.uniqid(), 
+            'description' => 'Random Stranger'.'-'.uniqid(),
+            'image' => 'https://images.unsplash.com/photo-1670881298357-1792768792d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+        ];
 
-        $news->setTitle($title);
-        $news->setDescription($description);
-        $news->setImageName($name);
+        $response = new Response(json_encode($data), 200);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
 
-        $entityManager->persist($news);
-        $entityManager->flush();
+    }
 
-        return $this->json(['data'=>'Added new news article with id '.$news->getId(), 'status'=>200]);
-
+    /**
+     * @Route("/schedule", "name: 'queue_news'")
+     */
+    public function schedule(MessageBusInterface $bus, Request $request){
+        $message = new NewsSchedule($request->request->all());
+        print_r($request->request->all());
+        $request->request->all();
+        $bus->dispatch($message);
+        return new Response($message->getContent(), 200);
     }
 }
 ?>
