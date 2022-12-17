@@ -4,13 +4,10 @@ namespace App\Message;
 class NewsSchedule
 {
     private $data;
-    // private $image_url;
-    // private $description;
-    // private $date;
 
-    public function __construct(array $data)
+    public function __construct($data)
     {
-        $this->data = json_encode($data);
+        $this->data = $data;
     }
 
     public function getContent()

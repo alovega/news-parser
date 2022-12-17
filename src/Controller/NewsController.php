@@ -58,11 +58,12 @@ class NewsController extends AbstractController
      * @Route("/schedule", "name: 'queue_news'")
      */
     public function schedule(MessageBusInterface $bus, Request $request){
-        $message = new NewsSchedule($request->request->all());
-        print_r($request->request->all());
-        $request->request->all();
+        $message = new NewsSchedule(json_decode($request->getContent()));
+        var_dump("this is controller");
+        var_dump(json_decode($request->getContent()));
+        // $request->request->all();
         $bus->dispatch($message);
-        return new Response($message->getContent(), 200);
+        return new Response(json_encode($message->getContent()), 200);
     }
 }
 ?>

@@ -20,10 +20,9 @@ class NewsScheduleHandler implements MessageHandlerInterface
     public function __invoke(NewsSchedule $message)
     {
         // ... do some work - like sending an SMS message!
-        $data = json_decode($message->getContent());
+        $data = $message->getContent();
         $entityManager = $this->doctrine -> getManager();
         $news = $this->doctrine->getRepository(News::class)->findOneBy(['title'=>$data->title]);
-        print_r($news);
         if($news == null){
             $news = new News();
         }

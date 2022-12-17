@@ -4,6 +4,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 use GuzzleHttp\Client;
 
@@ -15,19 +16,19 @@ class AddNewsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $client = new Client();
+        $client = HttpClient::create();
         //simulate getting data
-        $news_data = $client->get('http://localhost:8000/news')->getBody()->getContents();
+        $response = $client->request('GET','http://localhost:8000/news');
+        $news_data = $response->getContent();
+        var_dump(json_decode($news_data));
         //create data to be posted
-        $data = json_decode($news_data);
+        $encoded_data = json_decode($news_data);
         //queue data to message bus
-        $data = $client->post('http://localhost:8000/schedule', [
-            'title'=>$data->title,
-            'description'=>$data->description,
-            'image'=>$data->image
-        ]);
-
-        print_r($data->getBody()->getContents());
+        $data = $client->request('POST','http://localhost:8000/schedule',['json'=>[
+            'title'=>$encoded_data->title,
+            'description'=>$encoded_data->description,
+            'image'=>$encoded_data->image
+        ]]);
 
         $output->writeln(strval($news_data));
         return Command::SUCCESS;
