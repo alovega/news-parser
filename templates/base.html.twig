@@ -14,8 +14,27 @@
         {% endblock %}
     </head>
     <body>
+        <ul class="nav justify-content-end" style="background: darkgrey;
+    color: white;">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">News</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
         <div class="container-fluid">
             {% block body %}{% endblock %}
         </div>
+        <div class="footer footer-copyright text-center py-3" style="background: darkgrey;
+    color: white;">© 2022 Copyright:
+    <a href="/"> @alovega</a>
+  </div>
     </body>
 </html>
