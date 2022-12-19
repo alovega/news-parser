@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<div class="row justify-content-center">
+<div class="row">
     <div class="col-md-8">
         <div class="card mb-3">
             <img
@@ -17,6 +17,11 @@
                 <p class="card-text">{{news.description}}</p>
             </div>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-auto">
+        <a href="/news/edit/{{news.id}}" class="btn btn-primary btn-lg">Edit News</a>
     </div>
 </div>
 

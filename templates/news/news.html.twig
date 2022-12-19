@@ -1,15 +1,15 @@
 {% extends "./base.html.twig" %}
 
 {% block body %}
-<div class="row justify-content-evenly">
-    <h2> Uploaded News ({{ news|length }})</h2>
-    <div class="d-grid gap-2 col-6 mx-auto">
-        <a href="/news/create" class="btn btn-primary btn-lg">Create new movie</a>
+<h2> Uploaded News ({{ news|length }})</h2>
+<div class="row justify-content-start">
+    <div class="col-md-auto" style="margin-left: 2.5em; margin-bottom: 0.5em;">
+        <a href="/news/create" class="btn btn-primary btn-lg">Create news</a>
     </div>
 </div>
- <div class="row justify-content-evenly">
+<div class="row justify-content-evenly">
     {% for content in news %}
-            <div class="col-md-auto"> 
+            <div class="col-md-auto" style="margin-bottom: 0.5em;"> 
 
                 <div class="card" style="width:25rem;">
                     <img
@@ -26,9 +26,9 @@
                         </p>
                         {# {% if app.user  == app.user.id %} #}
                             <a 
-                                href="/news/edit/{{ content.id }}"
+                                href="/news/show/{{ content.id }}"
                                 class="btn btn-primary">
-                                Edit News
+                                Read More ..
                             </a>
 
                             <a 

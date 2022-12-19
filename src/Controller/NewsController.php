@@ -84,7 +84,7 @@ class NewsController extends AbstractController
     }
 
     /**
-     * @Route("/news/edit/{id}", "name: 'show_movie'")
+     * @Route("/news/show/{id}", "name: 'show_news'")
      */
     public function show($id):Response {
         $news = $this->newsRepository->find($id);
@@ -95,15 +95,14 @@ class NewsController extends AbstractController
     }
     
     /**
-     * @Route("/news/create", "name: 'create_movie'")
+     * @Route("/news/create", "name: 'create_news'")
      */
     public function create(Request $request):Response {
         $news = new News();
         $form = $this->createForm(NewsFormType::class, $news);
-        $form -> handleRequest($request);
+        $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $newNews = $form->getData();
-
+            dd($news);
             try{
 
                 $this->em->persist($newNews);
@@ -119,6 +118,38 @@ class NewsController extends AbstractController
             'news/create.html.twig',
             ['form' => $form->createView()]
         );
+    }
+
+    /**
+     * @Route("/news/edit/{id}", "name: 'edit_news'")
+     */
+    public function update($id, Request $request):Response {
+        $news = $this->newsRepository->find($id);
+        $form = $this->createForm(NewsFormType::class, $news);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+
+            $news->setImageUrl($form->get('image_url')->getData());
+            $news->setTitle($form->get('title')->getData());
+            $news->setDescription($form->get('description')->getData());
+
+            $this->em->flush();
+            return $this->redirectToRoute('app_news_index');
+        }
+        return $this->render('news/edit.html.twig',[
+            'news' => $news,
+            'form' => $form->createView()
+        ]);
+    }
+
+      /**
+     * @Route("/news/delete/{id}", "name: 'edit_news'")
+     */
+    public function delete($id):Response {
+        $news = $this->newsRepository->find($id);
+        $this->em->remove($news);
+        $this->em->flush();
+        return $this->redirectToRoute('app_news_index');
     }
 }
 ?>
