@@ -16,17 +16,15 @@
     <body>
         <ul class="nav justify-content-end" style="background: darkgrey;
     color: white;">
+
             <li class="nav-item">
-                <a class="nav-link active" href="#">News</a>
+                <a class="nav-link disabled" href="/uploaded">{{app.user ? app.user.email:'welcome'}}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
+                <a class="nav-link active" href="/uploaded">News</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <a class="nav-link" href="/{{app.user ? 'logout': 'login'}}">{{app.user ? 'Logout': 'Login'}}</a>
             </li>
         </ul>
         <div class="container-fluid">

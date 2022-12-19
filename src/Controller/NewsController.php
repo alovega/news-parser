@@ -14,6 +14,7 @@ use App\Form\NewsFormType;
 use Faker\Factory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 class NewsController extends AbstractController
 {
@@ -75,11 +76,17 @@ class NewsController extends AbstractController
     /**
      * @Route("/uploaded", "name: 'uploaded_news'")
      */
-    public function index():Response {
+    public function index(Request $request, PaginatorInterface $paginator):Response {
         $news = $this->newsRepository->findBy([]);
+        //paginate results
+        $paginated_news = $paginator->paginate(
+            $news,
+            $request->query->getInt('page', 1),
+            10
+        );
         return $this->render(
             "news/news.html.twig",
-            ["news"=>$news]
+            ["news"=>$paginated_news]
         );
     }
 
