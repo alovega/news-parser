@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <img
+                src="{{ news.imageUrl }}"
+                class="card-img-top "
+                alt="Image of Kelvin "
+            />
+            <div class="card-header">
+                {{news.title}}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{news.title}}</h5>
+                <p class="card-text">{{news.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

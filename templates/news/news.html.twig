@@ -1,1 +1,46 @@
-<h1>Your lucky number is {{ number }}</h1>
+{% extends "./base.html.twig" %}
+
+{% block body %}
+<div class="row justify-content-evenly">
+    <h2> Uploaded News ({{ news|length }})</h2>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <a href="/news/create" class="btn btn-primary btn-lg">Create new movie</a>
+    </div>
+</div>
+ <div class="row justify-content-evenly">
+    {% for content in news %}
+            <div class="col-md-auto"> 
+
+                <div class="card" style="width:25rem;">
+                    <img
+                        src="{{ content.imageUrl }}"
+                        class="card-img-top"
+                        alt="Image of Kelvin "
+                    />
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ content.title }}
+                        </h5>
+                        <p class="card-text">
+                            {{ content.description }}
+                        </p>
+                        {# {% if app.user  == app.user.id %} #}
+                            <a 
+                                href="/news/edit/{{ content.id }}"
+                                class="btn btn-primary">
+                                Edit News
+                            </a>
+
+                            <a 
+                                href="/news/delete/{{ content.id }}"
+                                class="btn btn-danger">
+                                Delete News
+                            </a>
+                        {# {% endif %} #}
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+</div>
+   
+{% endblock %}
