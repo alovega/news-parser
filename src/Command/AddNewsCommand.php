@@ -18,13 +18,13 @@ class AddNewsCommand extends Command
     {
         $client = HttpClient::create();
         //simulate getting data
-        $response = $client->request('GET','http://localhost:8000/news');
+        $response = $client->request('GET','http://parser-nginx:80/news');
         $news_data = $response->getContent();
         var_dump(json_decode($news_data));
         //create data to be posted
         $encoded_data = json_decode($news_data);
         //queue data to message bus
-        $data = $client->request('POST','http://localhost:8000/schedule',['json'=>[
+        $data = $client->request('POST','http://parser-nginx:80/schedule',['json'=>[
             'title'=>$encoded_data->title,
             'description'=>$encoded_data->description,
             'image'=>$encoded_data->image
