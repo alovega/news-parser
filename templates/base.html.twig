@@ -6,7 +6,7 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
@@ -14,6 +14,30 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <ul class="nav justify-content-end" style="background: darkgrey;
+    color: white;">
+
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/uploaded">{{app.user ? app.user.email:'welcome'}}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/uploaded">News</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/{{app.user ? 'logout': 'login'}}">{{app.user ? 'Logout': 'Login'}}</a>
+            </li>
+            {% if not app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">signup</a>
+                </li>
+            {% endif %}
+        </ul>
+        <div class="container-fluid">
+            {% block body %}{% endblock %}
+        </div>
+        <div class="footer footer-copyright text-center py-3" style="background: darkgrey;
+    color: white;">© 2022 Copyright:
+    <a href="/"> @alovega</a>
+  </div>
     </body>
 </html>

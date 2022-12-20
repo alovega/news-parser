@@ -1,0 +1,22 @@
+{% extends "./base.html.twig" %}
+
+{% block body %}
+<div class="form-group">
+    <h1 class="text-6xl text-center pb-12">
+        Edit News
+    </h1>
+
+    {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+        <br>
+        <br>
+        <button    
+            type="submit"
+            class="btn btn-primary">
+            update
+        </button>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
