@@ -109,15 +109,14 @@ class NewsController extends AbstractController
         $form = $this->createForm(NewsFormType::class, $news);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            dd($news);
             try{
 
-                $this->em->persist($newNews);
+                $this->em->persist($news);
                 $this->em->flush();
                 return $this->redirectToRoute('app_news_index');
 
-            }catch(Exception $e){
-                return new Response(["error occured: {$e->getMessage()}"]);
+            }catch(\Exception $e){
+                return new Response("error occured: {$e->getMessage()}");
             }
         
         }

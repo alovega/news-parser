@@ -1,0 +1,10 @@
+[Unit]
+Description=Symfony messenger-consume
+
+[Service]
+ExecStart=php /var/www/bin/console messenger:consume async --time-limit=3600
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

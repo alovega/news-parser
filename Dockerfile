@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     vim \
-    supervisor \
-    sudo
+    systemctl \
+    sudo 
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -36,26 +36,36 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
+RUN chown -R www-data:www-data /var/www
+
+# RUN chmod -R 775 storage
+
+# ENTRYPOINT ["/lib/systemd/systemd"]
 # Set working directory
 WORKDIR /var/www
-COPY ./config/messenger-worker.conf /etc/supervisor/conf.d/
+# Copy the Systemd unit file
+COPY ./config/systemd/user/messenger-worker@.service /etc/systemd/system/messenger-worker@.service
+# RUN mkdir -p /var/log/supervisor
+# RUN chmod -R 775  /var/log/supervisor
+# COPY ./config/messenger-worker.conf /etc/supervisor/conf.d/supervisord.conf
+RUN systemctl daemon-reload
+RUN systemctl enable messenger-worker@.service
+# RUN systemctl start messenger-worker@{1..20}.service
 # Add new cron entry
 RUN crontab -l | { cat; echo "* * * * * cd /var/www && /usr/local/bin/php bin/console app:add-news >> var/log/cron.log 2>&1"; } | crontab -
 
 
-# Start cron service
-RUN /etc/init.d/cron start
-
-
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD systemctl start messenger-worker@{1..20}.service; php-fpm
 
-RUN useradd -ms /bin/bash ubuntu && \
-    usermod -aG sudo ubuntu
+# RUN usermod -aG sudo $user
 # New added for disable sudo password
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
+# RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # Set as default user
-USER ubuntu
-RUN sudo supervisord
+# USER $user
+# RUN sudo supervisord
+
+# Start cron service
+RUN /etc/init.d/cron start
+# RUN /usr/sbin/init

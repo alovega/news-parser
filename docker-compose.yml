@@ -11,15 +11,17 @@ services:
   app:
     build:
       args:
-        user: alovega
+        user: kelvin
         uid: 1000
       context: ./
       dockerfile: Dockerfile
     image: news-parser
     restart: unless-stopped
     working_dir: /var/www/
+    # command: systemctl start messenger-worker@{1..20}.service
     volumes:
       - ./:/var/www
+      # - ./config/systemd/user/messenger-worker@.service:/etc/systemd/system/messenger-worker@.service
     networks:
       - parser
   db:
@@ -47,6 +49,8 @@ services:
     volumes:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d
+    depends_on:
+      - news-parser
     networks:
       - parser
       
