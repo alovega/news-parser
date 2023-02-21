@@ -44,6 +44,8 @@ check if the messenger-worker@.service is active if not use the command to activ
 
 <br>
 #### Endpoints available:
+
+
 | http methods |    Endpoint route                          |   Endpoint functionality                                     |
 | ------------ | ----------------------------------         | ------------------------------------------------------------ |
 | POST         | http://localhost:8000/signup                        |   Creates a user account                             |
