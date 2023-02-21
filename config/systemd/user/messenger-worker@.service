@@ -1,0 +1,11 @@
+[Unit]
+Description=Symfony messenger-consume %i
+Requires=docker.Service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/local/bin/php /var/www/bin/console messenger:consume async --time-limit=3600
+
+[Install]
+WantedBy=multi-user.target
