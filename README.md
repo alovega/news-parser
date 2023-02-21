@@ -39,10 +39,10 @@ check if the messenger-worker@.service is active if not use the command to activ
    systemctl start messenger-worker@{1..20}.service
 ```
 
- the nginx proxy parser will be listening to port 8000 expose the port through firewall if blocked
+ the nginx proxy parser will be listening to port 8000 expose the port through firewall if blocked. If you wish to map to a different port update it on the docker compose file
 
 
- <br>
+<br>
 #### Endpoints available:
 | http methods |    Endpoint route                          |   Endpoint functionality                                     |
 | ------------ | ----------------------------------         | ------------------------------------------------------------ |
