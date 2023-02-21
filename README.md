@@ -1,6 +1,6 @@
-# NNEWS-PARSER
+# NEWS-PARSER
 
-This project introduces will parsing news using cron job
+This project  will be  parsing news using cron job and symfony
 
 ## Deployment
 ####git clone the repository
